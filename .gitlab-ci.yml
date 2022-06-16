@@ -1,0 +1,32 @@
+cache:
+  key: maven-dependency
+  paths:
+    - ./.m2/repository
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+snapshot:
+  stage: deploy
+  environment: snapshot
+  only:
+    - snapshot
+  image: maven:3.6-openjdk-8-slim
+  script:
+    - mvn -s ".mvn/settings.xml" clean deploy -Dsha1=-$CI_COMMIT_SHORT_SHA
+  tags:
+    - vops-runner
+
+release:
+  stage: deploy
+  environment: release
+  only:
+    - release
+  image: maven:3.6-openjdk-8-slim
+  cache:
+    key: maven-dependency
+    paths:
+      - ./.m2/repository
+  script:
+    - mvn -s ".mvn/settings.xml" clean deploy -Dchangelist= -Dsha1=
+  tags:
+    - vops-runner

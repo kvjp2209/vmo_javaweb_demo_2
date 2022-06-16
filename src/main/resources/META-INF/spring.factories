@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.vmo.core.common.config.auto.NoSecurityConfig,\
+  com.vmo.core.common.config.auto.JpaSchedulerConfiguration
